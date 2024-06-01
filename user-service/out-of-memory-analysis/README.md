@@ -25,12 +25,12 @@ REST запрос позволяет получить отчет сервиса 
 
 Приблизительно через три минуты сервис прекращает работу с ошибкой OutOfMemory: Java heap space.
 
-![plot](./out-of-memory-analysis/images/oom_case_logs.jpg)
+![screenshot](images/oom_case_logs.jpg)
 
 Это говорит об исчерпании сервисом памяти, выделенной для heap, хотя были сохранены данные только одного пользователя.
 Утилита jconsole в этот момент показывает следующие JVM метрики сервиса
 
-![plot](./out-of-memory-analysis/images/oom_case_jvm.jpg)
+![screenshot](images/oom_case_jvm.jpg)
 
 На диаграмме виден постоянный прирост использования памяти heap без существенного освобождения ресурсов garbage collector.
 
@@ -40,13 +40,13 @@ REST запрос позволяет получить отчет сервиса 
 
 Отчет показал, что основное пространство heap занимает UserMonitoringServiceImpl, осуществляющий мониторинг пользователей.
 
-![plot](./out-of-memory-analysis/images/oom_mat_1.jpg)
+![screenshot](images/oom_mat_1.jpg)
 
 В dominator tree видно, что самый массивный объект UserMonitoringServiceImpl - ConcurrentHashMap history.
 Эта hash map содержит в себе 135 964 записи, хотя был сохранен всего один пользователь, запись должна быть всего одна, 
 а значение по ключу UserIdentity перезаписываться по расписанию.
 
-![plot](./out-of-memory-analysis/images/oom_mat_2.jpg)
+![screenshot](images/oom_mat_2.jpg)
 
 ## Вывод
 
@@ -57,7 +57,7 @@ REST запрос позволяет получить отчет сервиса 
 то в каждом ключе можно наблюдать разные экземпляры UserIdentity с одинаковым значением поля id.
 Поле id класса UserIdentity является внутренним идентификатором пользователя для сервиса мониторинга.
 
-![plot](./out-of-memory-analysis/images/oom_mat_3.jpg)
+![screenshot](images/oom_mat_3.jpg)
 
 ## Решение
 
@@ -69,9 +69,9 @@ REST запрос позволяет получить отчет сервиса 
 
 Утилита jconsole показывает использование памяти heap без постоянного роста и с периодическим освобождением ресурсов garbage collector.
 
-![plot](./out-of-memory-analysis/images/oom_fixed_jvm.jpg)
+![screenshot](images/oom_fixed_jvm.jpg)
 
 Отчет сервиса мониторинга по REST запросу содержит только одну запись, что соответствует количеству зарегистрированных пользователей.
 
-![plot](./out-of-memory-analysis/images/oom_fixed_user_report.jpg)
+![screenshot](images/oom_fixed_user_report.jpg)
 
