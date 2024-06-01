@@ -14,18 +14,18 @@ import java.util.UUID;
 public class UserIdentity {
     private String login;
     private String id;
-    private int hashCode;
+    //private int hashCode;
 
     public UserIdentity(User user) {
         this.login = user.getId();
         this.id = UUID.nameUUIDFromBytes(login.getBytes())
                 .toString();
-        this.hashCode = user.hashCode();
+        //this.hashCode = user.hashCode();
     }
-/*
-    @Override
+
+    /*@Override
     public boolean equals(Object  o) {
-        return this.hashCode == o.hashCode();
+        return this.hashCode() == o.hashCode();
     }
 
     @Override
