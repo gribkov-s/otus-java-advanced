@@ -1,21 +1,31 @@
 package ru.otus.game;
 
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import ru.otus.model.Game;
-import ru.otus.repository.GameRepository;
+import ru.otus.repository.*;
 import ru.otus.factgen.*;
 
-@AllArgsConstructor
+import java.util.List;
+
+@NoArgsConstructor
 public class GameServiceImpl implements GameService {
-    private GameRepository repository;
-    private FactGenerator factGen;
+    private final GameRepository repository = new ImMemoryGameRepository();
+    private final FactGenerator<Integer> factGen = new FactGeneratorInt(0, 1);
 
     @Override
-    public Game play(int prediction) {
+    public String play(int prediction) {
         Game game = new Game(prediction);
-        FactGeneratorInt factGen = new FactGeneratorInt(0, 1);
-        int fact = factGen.get();
+        var fact = factGen.get();
         game.setFact(fact);
-        return game;
+        repository.save(game);
+        return game.toString();
+    }
+
+    @Override
+    public List<String> getStat() {
+        return repository.getAll()
+                .stream()
+                .map(Game::toString)
+                .toList();
     }
 }

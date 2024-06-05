@@ -2,6 +2,9 @@ package ru.otus.game;
 
 import ru.otus.model.Game;
 
+import java.util.List;
+
 public interface GameService {
-    Game play(int prediction);
+    String play(int prediction);
+    List<String> getStat();
 }

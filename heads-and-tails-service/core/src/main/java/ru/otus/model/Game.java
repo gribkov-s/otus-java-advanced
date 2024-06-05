@@ -20,4 +20,19 @@ public class Game {
         this.datetime = Instant.now().toString();
         this.succeed = this.prediction == fact;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append("Prediction: ")
+                .append(prediction)
+                .append(", ")
+                .append("Fact: ")
+                .append(fact)
+                .append(". ")
+                .append("Result: ")
+                .append(succeed ? "success. " : "fail. ")
+                .append(datetime)
+                .toString();
+    }
 }
