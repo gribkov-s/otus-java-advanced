@@ -4,5 +4,6 @@ module api {
     requires spring.web;
     requires lombok;
     requires service;
+    requires spring.context;
     exports ru.otus.app;
 }

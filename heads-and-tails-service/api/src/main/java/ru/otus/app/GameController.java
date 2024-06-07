@@ -2,6 +2,7 @@ package ru.otus.app;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.game.GameService;
 import ru.otus.game.GameServiceImpl;
@@ -14,9 +15,10 @@ import java.util.List;
 public class GameController {
     private final GameService gameService = new GameServiceImpl();
 
-    @PostMapping("/play/{prediction}")
-    public ResponseEntity<String> play(@PathVariable Integer prediction) {
-        String gameResult = gameService.play(prediction);
+    @PostMapping("/play")
+    public ResponseEntity<String> play(Model model,
+                                       @RequestBody PredictionDto prediction) {
+        String gameResult = gameService.play(prediction.getPrediction());
         return ResponseEntity.ok(gameResult);
     }
 
