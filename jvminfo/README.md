@@ -1,7 +1,7 @@
-# Приложение для получения информации о процессах JVM
-#### подписанное сертификатом и запускаемое с помощью отдельной JRE
+# Приложение для получения информации о процессах java.
+#### подписанное сертификатом и запускаемое с помощью специально созданной JRE
 
-Приложение позволяет получить информацию о процессах системы, занятых JVM.
+Приложение позволяет получить информацию о процессах java.
 После запуска в консоль выводится информация о каждом таком процессе:
 * pid
 * parent pid
@@ -11,6 +11,31 @@
 * command
 
 ## Подпись
+
+### Создание сертификата
+
+*keytool -genkeypair -alias jvminfo-cert-1 -keypass 123456 -validity 365 -storepass 123456 -keyalg RSA -keystore .\keytool-certs\jvminfo_keystore*
+
+![screenshot](images/keytool_create_cert.jpg)
+
+### Просмотр сертификата
+
+*keytool -list -v -alias jvminfo-cert-1 -storepass 123456 -keystore .\keytool-certs\jvminfo_keystore*
+
+![screenshot](images/keytool_view_cert.jpg)
+
+### Подпись JAR
+
+*jarsigner .\target\jvminfo-1.0.jar -keystore .\keytool-certs\jvminfo_keystore jvminfo-cert-1*
+
+![screenshot](images/jarsigner_sign_jar.jpg)
+
+### Верификация JAR
+
+*jarsigner -verify .\target\jvminfo-1.0.jar -keystore .\keytool-certs\jvminfo_keystore jvminfo-cert-1*
+
+![screenshot](images/jarsigner_verify_jar.jpg)
+
 
 ## JRE
 
@@ -28,3 +53,6 @@
 
 *.\jlink\jre\bin\jvminfo-launcher.bat*
 
+![screenshot](images/custom_jre_run_app.jpg)
+
+Выведенная в консоль информация демонстрирует, что приложение было запущено на созданной JRE.
