@@ -25,13 +25,17 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <jmh-maven-plugin.version>1.0.3</jmh-maven-plugin.version>
 
         <spring.version>3.0.5</spring.version>
 
         <flyway.version>9.5.1</flyway.version>
         <h2database.version>2.1.214</h2database.version>
+
+        <jmh.version>1.37</jmh.version>
 
         <logback.version>1.4.6</logback.version>
         <projectlombok.version>1.18.26</projectlombok.version>
@@ -65,6 +69,16 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -118,6 +132,11 @@
                         </excludes>
                         <executable>true</executable>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.baidu.maven</groupId>
+                    <artifactId>jmh-maven-plugin</artifactId>
+                    <version>${jmh-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
