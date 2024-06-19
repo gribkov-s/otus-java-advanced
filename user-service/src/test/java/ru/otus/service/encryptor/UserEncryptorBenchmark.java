@@ -1,17 +1,20 @@
-package ru.otus.jmh;
+package ru.otus.service.encryptor;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.otus.jmh.AbstractBenchmark;
 import ru.otus.model.User;
-import ru.otus.service.encryptor.UserEncryptor;
-import ru.otus.service.encryptor.UserEncryptorImpl;
-
+import org.springframework.test.context.junit4.SpringRunner;
 import java.util.concurrent.TimeUnit;
+import org.junit.runner.RunWith;
 
-
+@SpringBootTest
+@State(Scope.Benchmark)
+@RunWith(SpringRunner.class)
 @BenchmarkMode({Mode.All})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class UserEncryptorBenchmark {
+public class UserEncryptorBenchmark extends AbstractBenchmark {
 
     @State(Scope.Benchmark)
     public static class ExecutionPlan {
@@ -29,9 +32,9 @@ public class UserEncryptorBenchmark {
     }
 
     @Benchmark
-    public void encrypt(ExecutionPlan plan, Blackhole bh) {
+    public void encrypt(Blackhole bh, ExecutionPlan plan) {
         UserEncryptor userEncryptor = new UserEncryptorImpl(
-                 plan.charset,
+                plan.charset,
                 plan.algorithm,
                 plan.isSalted);
 
