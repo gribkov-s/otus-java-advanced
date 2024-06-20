@@ -74,6 +74,7 @@
                 <configuration>
                     <includes>
                         <include>ru.otus.service.encryptor.UserEncryptorBenchmark</include>
+                        <include>ru.otus.dao.UserDaoBenchmark</include>
                     </includes>
                 </configuration>
             </plugin>

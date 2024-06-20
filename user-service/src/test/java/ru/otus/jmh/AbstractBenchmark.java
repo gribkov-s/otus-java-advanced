@@ -11,8 +11,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 public class AbstractBenchmark {
 
     private final static Integer FORK_ITERATIONS = 0;
-    private final static Integer MEASUREMENT_ITERATIONS = 3;
-    private final static Integer WARMUP_ITERATIONS = 3;
+    private final static Integer MEASUREMENT_ITERATIONS = 1;
+    private final static Integer WARMUP_ITERATIONS = 1;
 
     @Test
     public void executeJmhRunner() throws RunnerException {

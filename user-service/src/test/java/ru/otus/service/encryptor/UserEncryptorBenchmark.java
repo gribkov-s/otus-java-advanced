@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 @State(Scope.Benchmark)
 @RunWith(SpringRunner.class)
 @BenchmarkMode({Mode.All})
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class UserEncryptorBenchmark extends AbstractBenchmark {
 
     @State(Scope.Benchmark)
