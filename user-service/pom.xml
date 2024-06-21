@@ -73,8 +73,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>ru.otus.service.encryptor.UserEncryptorBenchmark</include>
-                        <include>ru.otus.dao.UserDaoBenchmark</include>
+                        <include>ru.otus.jmh.UserEncryptorBenchmark</include>
+                        <include>ru.otus.jmh.UserDaoBenchmark</include>
                     </includes>
                 </configuration>
             </plugin>

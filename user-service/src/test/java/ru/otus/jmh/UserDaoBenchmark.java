@@ -1,11 +1,11 @@
-package ru.otus.dao;
+package ru.otus.jmh;
 
 import org.junit.runner.RunWith;
 import org.openjdk.jmh.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.jmh.AbstractBenchmark;
+import ru.otus.dao.UserDao;
 import ru.otus.model.User;
 
 import java.util.concurrent.TimeUnit;
