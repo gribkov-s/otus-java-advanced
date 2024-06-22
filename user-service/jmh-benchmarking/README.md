@@ -12,6 +12,7 @@
 * measurement iterations: 3
 * warmup iterations: 3
 * threads: 1
+* output time unit: MICROSECONDS
 
 Показатели производительности:
 * AverageTime
