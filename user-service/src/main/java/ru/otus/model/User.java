@@ -1,5 +1,6 @@
 package ru.otus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,15 +28,17 @@ public class User implements Persistable<String> {
     private String password;
 
     @Transient
+    @JsonIgnore
     private boolean isNew;
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.isNew = false;
+        this.isNew = true;
     }
 
     @Override
+    @JsonIgnore
     public String getId() {
         return this.login;
     }

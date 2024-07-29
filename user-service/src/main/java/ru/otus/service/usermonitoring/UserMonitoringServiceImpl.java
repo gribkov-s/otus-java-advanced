@@ -1,4 +1,4 @@
-package ru.otus.service;
+package ru.otus.service.usermonitoring;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

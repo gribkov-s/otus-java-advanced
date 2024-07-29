@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:h2:mem:///userservice;DB_CLOSE_ON_EXIT=TRUE
+    url: r2dbc:h2:mem:///userservice;DB_CLOSE_DELAY=-1
     username: usr
     password: pwd
   flyway:
