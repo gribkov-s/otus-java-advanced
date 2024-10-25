@@ -22,7 +22,7 @@ public class EmulatorApp {
         }
 
         InputOutput inputOutput = new InputOutputImpl(System.out, System.in);
-        FileReader reader = new FileReaderMBB();
+        FileReader reader = new FileReaderBB();
         FileCache cache = createFileCache(isWeakRefCache);
 
         Emulator emulator = new EmulatorImpl(inputOutput, reader, cache);

@@ -16,18 +16,15 @@ import java.nio.file.Paths;
 @Getter
 @Setter
 public class FileReaderBB implements FileReader {
-    private final String charset;
     private Path path;
 
     public FileReaderBB(String path) {
         Path pth = Paths.get(path);
         checkPath(pth);
-        this.charset = "UTF-8";
     }
 
     public FileReaderBB() {
-        this.path = null;
-        this.charset = "UTF-8";
+
     }
 
     @Override
@@ -42,28 +39,21 @@ public class FileReaderBB implements FileReader {
     }
 
     @Override
-    public String read(String name) {
-        var content = new StringBuilder();
+    public ByteBuffer read(String name) {
         Path file = path.resolve(name);
+        ByteBuffer buffer = null;
 
         try (RandomAccessFile accessFile = new RandomAccessFile(file.toFile(), "r");
              FileChannel fileChannel = accessFile.getChannel()) {
 
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-
-            while (fileChannel.read(byteBuffer) > 0) {
-                byteBuffer.flip();
-                byte[] bytes = new byte[byteBuffer.remaining()];
-                byteBuffer.get(bytes);
-                String packet = new String(bytes, charset);
-                content.append(packet);
-                byteBuffer.clear();
-            }
+            buffer = ByteBuffer.allocateDirect((int) fileChannel.size());
+            fileChannel.read(buffer);
+            buffer.flip();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return content.toString();
+        return buffer;
     }
 
     private void checkPath(Path pth) {

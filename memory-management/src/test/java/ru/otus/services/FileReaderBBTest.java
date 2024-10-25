@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import ru.otus.services.filereader.FileReader;
 import ru.otus.services.filereader.FileReaderBB;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+
 public class FileReaderBBTest {
 
     @DisplayName("Чтение содержимого файла")
@@ -16,7 +20,9 @@ public class FileReaderBBTest {
         FileReader reader = new FileReaderBB(path);
 
         //when
-        String content = reader.read(file);
+        ByteBuffer buffer = reader.read(file);
+        CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer);
+        String content = charBuffer.toString();
 
         //then
         assert content.equals("READING WAS SUCCESSFUL");

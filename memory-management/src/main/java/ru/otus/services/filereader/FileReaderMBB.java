@@ -7,10 +7,7 @@ import lombok.Setter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,18 +16,16 @@ import java.nio.file.Paths;
 @Getter
 @Setter
 public class FileReaderMBB implements FileReader {
-    private final String charset;
+
     private Path path;
 
     public FileReaderMBB(String path) {
         Path pth = Paths.get(path);
         checkPath(pth);
-        this.charset = "UTF-8";
     }
 
     public FileReaderMBB() {
-        this.path = null;
-        this.charset = "UTF-8";
+
     }
 
     @Override
@@ -45,25 +40,20 @@ public class FileReaderMBB implements FileReader {
     }
 
     @Override
-    public String read(String name) {
+    public ByteBuffer read(String name) {
         Path file = path.resolve(name);
-        String content = null;
+        ByteBuffer buffer = null;
 
         try (RandomAccessFile accessFile = new RandomAccessFile(file.toFile(), "r");
              FileChannel fileChannel = accessFile.getChannel()) {
 
-            MappedByteBuffer mappedByteBuffer = fileChannel.map(
+            buffer = fileChannel.map(
                     FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-
-            if (mappedByteBuffer != null) {
-                CharBuffer charBuffer = Charset.forName(charset).decode(mappedByteBuffer);
-                content = charBuffer.toString();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return content;
+        return buffer;
     }
 
     private void checkPath(Path pth) {
