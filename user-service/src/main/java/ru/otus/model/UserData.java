@@ -20,5 +20,4 @@ public class UserData {
     private String login;
     @Schema(description = "User last monitoring timestamp")
     private Instant lastMonitoring;
-    //private String lastMonitoring;
 }
