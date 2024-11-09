@@ -5,16 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import ru.otus.model.User;
 import ru.otus.model.UserData;
 import ru.otus.model.UserIdentity;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @AllArgsConstructor
