@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Data
@@ -17,5 +19,6 @@ public class UserData {
     @Schema(description = "User login")
     private String login;
     @Schema(description = "User last monitoring timestamp")
-    private String lastMonitoring;
+    private Instant lastMonitoring;
+    //private String lastMonitoring;
 }

@@ -5,20 +5,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.model.User;
 import ru.otus.model.UserData;
 import ru.otus.model.UserIdentity;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @AllArgsConstructor
 public class UserMonitoringServiceImpl implements UserMonitoringService {
     private static final Logger log = LoggerFactory.getLogger(UserMonitoringServiceImpl.class);
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
-    private static final Map<UserIdentity, String> history = new ConcurrentHashMap<>();
+    //private static final Map<UserIdentity, String> history = new ConcurrentHashMap<>();
+    private static final Map<UserIdentity, Instant> history = new ConcurrentHashMap<>();
     private static final Map<String, MonitoringRunningTask> users = new ConcurrentHashMap<>();
 
     @Override
@@ -28,19 +32,21 @@ public class UserMonitoringServiceImpl implements UserMonitoringService {
         var runMonitoring = new Runnable() {
             @Override
             public void run() {
-                String ts = Instant.now().toString();
-                history.put(userIdentity, ts);
+                /*String ts = Instant.now().toString();
+                history.put(userIdentity, ts);*/
+                history.put(userIdentity, Instant.now());
             }
         };
 
         var stopMonitoring = new Callable<Boolean>() {
             @Override
             public Boolean call() {
-                String login = history.remove(userIdentity);
+                //String value = history.remove(userIdentity);
+                Instant value = history.remove(userIdentity);
                 log.info("Monitoring was stopped for user: id {}, login {}",
                         userIdentity.getId(),
                         userIdentity.getLogin());
-                return login != null;
+                return value != null;
             }
         };
 
@@ -75,8 +81,13 @@ public class UserMonitoringServiceImpl implements UserMonitoringService {
     @Override
     public Flux<UserData> getUserReport() {
         return Flux.fromStream(
-                history.keySet().stream()
-                        .map(key -> new UserData(key.getId(), key.getLogin(), history.get(key))));
+                history.entrySet().stream()
+                .map(entry -> {
+                    UserIdentity ui = entry.getKey();
+                    //String ts = entry.getValue().toString();
+                    Instant ts = entry.getValue();
+                    return new UserData(ui.getId(), ui.getLogin(), ts);
+                }));
     }
 
     private class MonitoringRunningTask implements Callable<Boolean> {

@@ -20,6 +20,8 @@ import ru.otus.service.UserServiceImpl;
 import ru.otus.service.encryptor.UserEncryptor;
 import ru.otus.service.usermonitoring.UserMonitoringService;
 
+import java.time.Instant;
+
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = UserController.class)
 @Import({UserServiceImpl.class, UserClient.class, UserClientRpmLimiter.class, UserClientResilienceAdapter.class})
@@ -137,7 +139,8 @@ public class UserControllerTest {
 
     @Test
     public void getUserReport() {
-        UserData userData = new UserData("0000000", "vasya", "1970-01-01 00:00:00.000");
+        //UserData userData = new UserData("0000000", "vasya", "1970-01-01 00:00:00.000");
+        UserData userData = new UserData("0000000", "vasya", Instant.now());
 
         Mockito
                 .when(userMonitoringService.getUserReport())

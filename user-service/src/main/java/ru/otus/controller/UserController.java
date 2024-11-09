@@ -3,11 +3,15 @@ package ru.otus.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.model.User;
 import ru.otus.model.UserData;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
 
 
 @RestController
@@ -17,7 +21,6 @@ public class UserController {
 
     @Autowired
     private final UserClientResilienceAdapter userClientResilienceAdapter;
-
 
     @GetMapping("/")
     @Operation(summary = "Gets all users", tags = "user")
@@ -59,5 +62,20 @@ public class UserController {
     @Operation(summary = "Deletes user", tags = "user")
     public Mono<String> deleteUser(@PathVariable String login) {
         return userClientResilienceAdapter.delete(login);
+    }
+
+    @PostMapping("/save-test-users")
+    @Operation(summary = "Saves new test users", tags = "user")
+    public Flux<String> saveTestUsers(@RequestParam String loginPrefix, @RequestParam Integer usersNumber) {
+        int usersNumberChecked = usersNumber <= 10000 && usersNumber > 0 ? usersNumber : 1;
+        CopyOnWriteArrayList<Mono<String>> responses = new CopyOnWriteArrayList<>();
+        IntStream.rangeClosed(1, usersNumberChecked).parallel()
+                .forEach(ic -> {
+                    String login = loginPrefix + ic;
+                    User user = new User(login, login);
+                    Mono<String> response = userClientResilienceAdapter.save(user);
+                    responses.add(response);
+                });
+        return Flux.concat(responses);
     }
 }
